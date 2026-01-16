@@ -85,20 +85,6 @@ These factors are consistent with known clinical indicators of sepsis, supportin
 
 ---
 
-## Repository Structure
-├── data/                     
-├── notebooks/
-│   ├── 01_exploratory_and_modeling.ipynb
-├── figures/
-│   ├── shap_beeswarm.png
-│   ├── shap_bar.png
-├── README.md
-├── requirements.txt
-└── .gitignore
-
-
----
-
 ## Key Takeaways
 - Accuracy alone is misleading for imbalanced clinical outcomes
 - Threshold selection is a clinical decision, not a default parameter
