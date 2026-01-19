@@ -1,84 +1,55 @@
-# Sepsis Early Warning in ICU Using Machine Learning
+# Temporal Early Warning of Sepsis Deterioration in ICU Patients
 
 ## Overview
-Sepsis is a leading cause of morbidity and mortality in intensive care units (ICUs). Early identification is clinically challenging due to heterogeneous patient trajectories, missing data, and severe class imbalance.
+Sepsis deterioration in intensive care units (ICUs) is a dynamic process that unfolds over time. Early identification of impending deterioration is clinically critical, yet challenging due to irregular measurements, missing data, and heterogeneous patient trajectories.
 
-This repository presents a machine learning–based early warning system for sepsis using structured ICU clinical data. The project explicitly prioritises early risk detection and sensitivity over accuracy, reflecting real-world clinical decision-making where missed sepsis cases carry high cost.
+This repository presents a patient-level temporal early warning system for predicting sepsis deterioration in ICU patients using longitudinal clinical data. The task is formulated as prospective risk prediction within a fixed future time horizon, rather than retrospective sepsis detection.
 
-Two modeling approaches are evaluated:
-- A transparent linear baseline (Logistic Regression)
-- A tree-based model (XGBoost)
+The project is designed as a research-oriented implementation aligned with PhD-level standards in health data science and clinical machine learning.
 
-Model interpretability is addressed using **SHAP** to identify clinically meaningful drivers of sepsis risk.
 
----
 
-## Clinical Motivation
-Early sepsis prediction differs fundamentally from retrospective diagnosis. Models must operate under uncertainty, tolerate false positives, and provide defensible explanations.
+## Problem Formulation
+At each ICU time point, the model estimates the probability that a patient will develop sepsis within the next H hours, given all clinical information available up to that time.
 
-This project focuses on:
-- Early warning rather than final diagnosis  
-- Clinically defensible decision thresholds  
-- Transparent interpretation of model predictions  
+Key design principles:
+- Prospective prediction rather than retrospective labeling  
+- Patient-level evaluation to prevent temporal and cross-patient data leakage  
+- Alignment with real-world early warning deployment settings  
 
----
 
-## Dataset
-- ICU patient-level dataset  
-- Binary outcome: `sepsis` vs `non-sepsis`  
-- Strongly imbalanced class distribution (sepsis as minority class)
 
-### Preprocessing
-- Feature selection based on clinical relevance  
-- Consistent train–test feature alignment  
-- Native handling of missing values in tree-based models  
+## Methodological Pipeline
+The analysis follows the structured pipeline below:
 
----
+1. Data ingestion and structural inspection  
+2. Temporal alignment and patient-level ordering  
+3. Prospective early warning label construction  
+4. Feature definition and cohort construction  
+5. Patient-level train–test partitioning  
+6. Missing-value imputation and feature preparation  
+7. Gradient boosted tree model development  
+8. Discriminative performance evaluation  
+9. Global model interpretability analysis  
+10. Local explanation of individual risk states  
+11. Threshold-based clinical decision analysis (baseline)  
+12. Clinical utility and risk stratification analysis  
 
-## Modeling Strategy
 
-### Model 1: Logistic Regression (Baseline)
-A transparent linear model is used to establish a performance reference.
 
-**Key characteristics:**
-- Probabilistic outputs  
-- Explicit threshold tuning  
-- Serves as an interpretable benchmark  
+## Model and Evaluation
+A gradient boosted decision tree model (LightGBM) is trained using patient-level splits to ensure strict separation between training and evaluation cohorts.
 
----
+Given strong class imbalance, performance is assessed using:
+- AUROC  
+- Precision–recall metrics  
 
-### Decision Threshold Optimisation
-Rather than relying on the default probability threshold (0.5), multiple operating points were evaluated.
+Rather than relying on a single decision threshold, predicted risk scores are further examined through risk stratification, enabling assessment of potential clinical utility for patient prioritisation and early intervention.
 
-**Selected operating threshold:** 0.30
-
-**Rationale:**
-- Recall ≈ 0.86 for septic patients  
-- Precision is lower but acceptable for early-warning screening  
-- Consistent with practices reported in sepsis prediction literature  
-
-Threshold selection is treated as a **clinical decision**, not a default modeling choice.
-
----
-
-### Model 2: XGBoost (Tree-Based Model)
-XGBoost was selected for its strong performance on structured clinical data.
-
-**Advantages:**
-- Captures non-linear relationships  
-- Handles missing values natively  
-- Fully compatible with SHAP-based interpretability  
-
-**Final performance (threshold = 0.30):**
-- ROC-AUC ≈ 0.92  
-- Substantial improvement over the linear baseline  
-- Improved sensitivity–specificity trade-off  
-
----
 
 ## Model Interpretability
 
-SHAP (SHapley Additive exPlanations) was used to analyse both global feature importance and patient-level risk attribution for the XGBoost model.
+SHAP (SHapley Additive exPlanations) is used to interpret both global model behaviour and individual patient risk trajectories.
 
 ### Global Feature Importance
 ![Global SHAP Feature Importance](figures/shap_bar.png)
@@ -86,32 +57,16 @@ SHAP (SHapley Additive exPlanations) was used to analyse both global feature imp
 ### Feature Impact Distribution
 ![Global SHAP Beeswarm](figures/shap_beeswarm.png)
 
-### Dominant Predictors of Sepsis Risk
-- ICU length of stay  
-- Observation time  
-- Fever  
-- Oxygen requirement  
-- Lactate levels  
-- Respiratory instability  
+These analyses highlight clinically meaningful drivers of deterioration risk and support transparent interpretation of model predictions.
 
-These features align with established clinical indicators of sepsis, supporting the medical plausibility of the model.
 
----
-
-## Key Takeaways
-- Accuracy alone is misleading for imbalanced clinical outcomes  
-- Threshold selection is a clinical decision, not a default parameter  
-- Tree-based models substantially outperform linear baselines on ICU data  
-- Interpretability is essential for trust in clinical machine learning systems  
-
----
 
 ## Repository Structure
 ```text
 .
 ├── notebooks/
-│   └── sepsis_early_warning_pipeline.ipynb
+│   └── temporal_sepsis_early_warning_pipeline.ipynb
 ├── figures/
-│   ├── shap_bar.png
-│   ├── shap_beeswarm.png
+│   ├── shap_global_bar.png
+│   ├── shap_global_beeswarm.png
 ├── README.md
