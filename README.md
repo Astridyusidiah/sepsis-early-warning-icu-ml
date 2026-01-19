@@ -9,7 +9,7 @@ Two models are developed and compared:
 
 Model interpretability is addressed using SHAP to identify clinically meaningful drivers of sepsis risk.
 
----
+
 
 ## Clinical Motivation
 Sepsis is a major cause of morbidity and mortality in intensive care units. Early identification is challenging due to heterogeneous patient trajectories, missing data, and class imbalance.
@@ -19,7 +19,7 @@ This project focuses on:
 - Clinically defensible decision thresholds
 - Transparent interpretation of model predictions
 
----
+
 
 ## Dataset
 - ICU patient-level dataset
@@ -31,7 +31,7 @@ Preprocessing includes:
 - Consistent train–test feature alignment
 - Native handling of missing values in tree-based models
 
----
+
 
 ## Modeling Strategy
 
@@ -83,7 +83,12 @@ Top contributing features include:
 
 These factors are consistent with known clinical indicators of sepsis, supporting the medical plausibility of the model.
 
----
+## Key results
+- Global feature importance (SHAP bar):  
+  [`figures/shap_global_bar.png`](figures/shap_bar.png)
+
+- Global SHAP distribution (beeswarm):  
+  [`figures/shap_global_beeswarm.png`](figures/shap_beeswarm.png)
 
 ## Key Takeaways
 - Accuracy alone is misleading for imbalanced clinical outcomes
