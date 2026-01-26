@@ -1,4 +1,4 @@
-# Sepsis Early Warning in ICU Patients Using Machine Learning
+# Sepsis Risk Stratification in ICU Patients Using Aggregated Clinical Features
 
 This repository implements a machine learning pipeline for early warning risk prediction of sepsis in ICU patients using routinely collected clinical variables.
 
