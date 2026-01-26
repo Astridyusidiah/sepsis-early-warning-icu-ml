@@ -64,7 +64,7 @@ The logical structure is implicit in the code and follows standard clinical ML p
 
   -Cohort-level risk stratification
 
-This avoids arbitrary alert thresholds and reflects exploratory clinical modeling
+A fixed classification threshold (0.30) is shown for illustrative purposes only and was not optimized for deployment.
 
 # Model Interpretability
 
